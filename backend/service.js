@@ -11,7 +11,7 @@ const dataState = {
 
 module.exports = {
 	
-	name: "auth",
+	name: "login",
 
 	/**
 	 * Settings
