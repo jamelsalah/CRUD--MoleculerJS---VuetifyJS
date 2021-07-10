@@ -4,14 +4,8 @@
  * @typedef {import('moleculer').Context} Context Moleculer's Context
  */
 
-const dataState = {
-	login : "james",
-	pass : "1234"
-}
-
 module.exports = {
-	
-	name: "login",
+	name: "greeter",
 
 	/**
 	 * Settings
@@ -31,28 +25,33 @@ module.exports = {
 	actions: {
 
 		/**
+		 * Say a 'Hello' action.
+		 *
+		 * @returns
+		 */
+		hello: {
+			rest: {
+				method: "GET",
+				path: "/hello"
+			},
+			async handler() {
+				return "Hello Moleculer";
+			}
+		},
+
+		/**
 		 * Welcome, a username
 		 *
 		 * @param {String} name - User name
 		 */
-		login: {
-			rest: {
-				method: "POST",
-				path: "/login"
-			},
-			
+		welcome: {
+			rest: "/welcome",
 			params: {
-				login: "string",
-				pass: [{type: "string"},
-						{type: "number"}]
+				name: "string"
 			},
 			/** @param {Context} ctx  */
 			async handler(ctx) {
-				if(ctx.params.login == dataState.login  &&  ctx.params.pass == dataState.pass) {
-					return 'login realizado com sucesso'
-				} else {
-					throw new Error (`login ou senha incorretos`);
-				}
+				return `Welcome, ${ctx.params.name}`;
 			}
 		}
 	},

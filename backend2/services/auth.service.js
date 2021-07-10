@@ -44,7 +44,9 @@ module.exports = {
 			params: {
 				login: "string",
 				pass: [{type: "string"},
-						{type: "number"}]
+						{type: "number"
+
+				}]
 			},
 			/** @param {Context} ctx  */
 			async handler(ctx) {

@@ -2,13 +2,11 @@
 
 const { ServiceBroker } = require("moleculer");
 const { ValidationError } = require("moleculer").Errors;
-const TestService = require("../../service");
-const ApiService = require("moleculer-web");
+const TestService = require("../../../services/greeter.service");
 
 describe("Test 'greeter' service", () => {
-	let broker = new ServiceBroker({ logger: console });
+	let broker = new ServiceBroker({ logger: false });
 	broker.createService(TestService);
-	broker.createService(ApiService);
 
 	beforeAll(() => broker.start());
 	afterAll(() => broker.stop());
