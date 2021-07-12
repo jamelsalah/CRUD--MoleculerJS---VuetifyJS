@@ -20,8 +20,9 @@
     "moleculer-repl": "^0.6.4"
   },
   "dependencies": {
-    "moleculer-web": "^0.9.1",
-    "moleculer": "^0.14.13"
+    "jsonwebtoken": "^8.5.1",
+    "moleculer": "^0.14.13",
+    "moleculer-web": "^0.9.1"
   },
   "engines": {
     "node": ">= 10.x.x"

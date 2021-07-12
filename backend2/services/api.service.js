@@ -1,6 +1,8 @@
 "use strict";
 
 const ApiGateway = require("moleculer-web");
+const jsonwebtoken = require("jsonwebtoken");
+const repository = require("../repository")
 
 /**
  * @typedef {import('moleculer').Context} Context Moleculer's Context
@@ -26,7 +28,9 @@ module.exports = {
 		routes: [
 			{
 				path: "/api",
-
+				cors: {
+					origin: "*"
+				},
 				whitelist: [
 					"**"
 				],
@@ -137,9 +141,10 @@ module.exports = {
 				const token = auth.slice(7);
 
 				// Check the token. Tip: call a service which verify the token. E.g. `accounts.resolveToken`
-				if (token == "123456") {
+				const decriptedToken = jsonwebtoken.verify(token, 'secret');
+				if (decriptedToken.user === repository.login) {
 					// Returns the resolved user. It will be set to the `ctx.meta.user`
-					return { id: 1, name: "John Doe" };
+					return repository;
 
 				} else {
 					// Invalid token

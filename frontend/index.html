@@ -9,23 +9,34 @@
 
 <h1>Login</h1>
 <body>
-    <form method="POST" id="form" onsubmit="return false">
+    <form action ="/api/login/login" method="POST" id="form" onsubmit="return false">
         <input type="text"  id="login">
         <input type="password" id="pass">
-        <input type="submit" value="login">
+        <input type="submit" value="login" >
     </form>
     
 </body>
 
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script>
     const form = document.getElementById('form');
     form.addEventListener('submit', handle);
+
+    const api = axios.create({
+        baseURL: 'http://localhost:3000',
+});
 
     async function handle(e) {
         const login = document.getElementById('login').value;
         const pass = document.getElementById('pass').value;
 
-        console.log(`login = ${login}  pass = ${pass}`);
+        const result = await api.post('api/login/login', {login, pass})
+        
+        const {acessToken} = result.data;
+
+        localStorage.setItem('acessToken', acessToken); 
+
+        location.href = "./home"
     }
 </script>
 </html>

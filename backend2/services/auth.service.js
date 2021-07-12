@@ -1,13 +1,12 @@
 "use strict";
+const  jsonwebtoken = require('jsonwebtoken');
+const repository = require("../repository")
 
 /**
  * @typedef {import('moleculer').Context} Context Moleculer's Context
  */
 
-const dataState = {
-	login : "james",
-	pass : "1234"
-}
+
 
 module.exports = {
 	
@@ -50,8 +49,11 @@ module.exports = {
 			},
 			/** @param {Context} ctx  */
 			async handler(ctx) {
-				if(ctx.params.login == dataState.login  &&  ctx.params.pass == dataState.pass) {
-					return 'login realizado com sucesso'
+				if(ctx.params.login == repository.login  &&  ctx.params.pass == repository.pass) {
+					return {
+						message: 'login realizado com sucesso',
+						acessToken: jsonwebtoken.sign({user: repository.login}, "secret")
+					};
 				} else {
 					throw new Error (`login ou senha incorretos`);
 				}
