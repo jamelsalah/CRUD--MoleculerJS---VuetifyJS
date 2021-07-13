@@ -1,6 +1,6 @@
 "use strict";
 const  jsonwebtoken = require('jsonwebtoken');
-const repository = require("../repository")
+const repository = require("../repository");
 
 /**
  * @typedef {import('moleculer').Context} Context Moleculer's Context
@@ -10,7 +10,7 @@ const repository = require("../repository")
 
 module.exports = {
 	
-	name: "login",
+	name: "auth",
 
 	/**
 	 * Settings
@@ -28,12 +28,6 @@ module.exports = {
 	 * Actions
 	 */
 	actions: {
-
-		/**
-		 * Welcome, a username
-		 *
-		 * @param {String} name - User name
-		 */
 		login: {
 			rest: {
 				method: "POST",
@@ -43,21 +37,56 @@ module.exports = {
 			params: {
 				login: "string",
 				pass: [{type: "string"},
-						{type: "number"
-
-				}]
+						{type: "number"}
+				]
 			},
 			/** @param {Context} ctx  */
 			async handler(ctx) {
-				if(ctx.params.login == repository.login  &&  ctx.params.pass == repository.pass) {
-					return {
-						message: 'login realizado com sucesso',
-						acessToken: jsonwebtoken.sign({user: repository.login}, "secret")
-					};
-				} else {
-					throw new Error (`login ou senha incorretos`);
+				for(let user of repository) {
+					if(ctx.params.login === user.login  &&  ctx.params.pass === user.pass) {
+						return {
+							message: 'login realizado com sucesso',
+							acessToken: jsonwebtoken.sign({user: repository.login}, "secret")
+						};
+					}
+				}
+
+				throw new Error (`login ou senha incorretos`);
+			}
+		},
+
+		register: {
+			rest: { 
+					method: "POST",
+					path: "/register"
+			},
+			params: {
+				login: "string",
+				pass: [{type: "string"},
+						{type: "number"}
+				],
+				pass2: [{type: "string"},
+						{type: "number"}
+				],
+			},
+			async handler(ctx) {
+				for(let user of repository) {
+					if(ctx.params.login === user.login) {
+						throw new Error('login ja utilizado ;/')
+					}
+				}
+
+				repository.push({
+					login :ctx.params.login, 
+					pass : ctx.params.pass
+				});
+
+				console.log(repository)
+				return {
+					message: 'usuario registrado com sucesso!'
 				}
 			}
+
 		}
 	},
 
