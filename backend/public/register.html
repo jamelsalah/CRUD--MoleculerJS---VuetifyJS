@@ -4,15 +4,16 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>Register</title>
 </head>
 
-<h1>Login</h1>
+<h1>Subscribe</h1>
 <body>
-    <form action ="/api/login/login" method="POST" id="form" onsubmit="return false">
+    <form method="POST" id="form" onsubmit="return false">
         <input type="text"  id="login">
         <input type="password" id="pass">
-        <input type="submit" value="login" >
+        <input type="password" id="pass2">
+        <input type="submit" value="send" >
     </form>
     
 </body>
@@ -29,14 +30,11 @@
     async function handle(e) {
         const login = document.getElementById('login').value;
         const pass = document.getElementById('pass').value;
+        const pass2 = document.getElementById('pass2').value;
 
-        const result = await api.post('api/login/login', {login, pass})
-        
-        const {acessToken} = result.data;
+        const result = await api.post('api/auth/register', {login, pass, pass2})
 
-        localStorage.setItem('acessToken', acessToken); 
-
-        location.href = "./home"
+        location.href = "./login"
     }
 </script>
 </html>
