@@ -2,7 +2,7 @@
 
 const ApiGateway = require("moleculer-web");
 const jsonwebtoken = require("jsonwebtoken");
-const repository = require("../repository")
+const users = require("../repository/users")
 
 /**
  * @typedef {import('moleculer').Context} Context Moleculer's Context
@@ -139,18 +139,18 @@ module.exports = {
 
 			if (auth && auth.startsWith("Bearer")) {
 				const token = auth.slice(7);
+				const decriptedToken = jsonwebtoken.verify(token, 'secret');
 
 				// Check the token. Tip: call a service which verify the token. E.g. `accounts.resolveToken`
-				const decriptedToken = jsonwebtoken.verify(token, 'secret');
-				if (decriptedToken.user === repository.login) {
-					// Returns the resolved user. It will be set to the `ctx.meta.user`
-					return repository;
-
-				} else {
-					// Invalid token
-					throw new ApiGateway.Errors.UnAuthorizedError(ApiGateway.Errors.ERR_INVALID_TOKEN);
+				for(let user of users) {
+					if (decriptedToken.user === user.login) {
+						// Returns the resolved user. It will be set to the `ctx.meta.user`
+						return user.name;
+					} else {
+						// Invalid token
+						throw new ApiGateway.Errors.UnAuthorizedError(ApiGateway.Errors.ERR_INVALID_TOKEN);
+					}
 				}
-
 			} else {
 				// No token. Throw an error or do nothing if anonymous access is allowed.
 				// throw new E.UnAuthorizedError(E.ERR_NO_TOKEN);
