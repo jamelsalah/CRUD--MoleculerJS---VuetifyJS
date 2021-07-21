@@ -78,7 +78,7 @@ module.exports = {
 					}
 				}
 
-				repository.push({
+				users.push({
 					login : ctx.params.login, 
 					pass : ctx.params.pass,
 					name : ctx.params.name
