@@ -45,10 +45,10 @@
                   <v-form>
                   <v-text-field
                         label="Name"
-                        name="Name"
+                        name="name"
                         prepend-icon="mdi-account"
                         type="text"
-                        v-model="Name"
+                        v-model="name"
                       ></v-text-field>
 
                       <v-text-field
@@ -56,23 +56,23 @@
                         name="login"
                         prepend-icon="mdi-account"
                         type="text"
-                        v-model="Login"
+                        v-model="login"
                       ></v-text-field>
 
                       <v-text-field
                         label="Pass"
-                        name="Pass"
+                        name="pass"
                         prepend-icon="mdi-account"
                         type="password"
-                        v-model="Pass"
+                        v-model="pass"
                       ></v-text-field>
 
                       <v-text-field
                         label="Pass2"
-                        name="Pass2"
+                        name="pass2"
                         prepend-icon="mdi-account"
                         type="password"
-                        v-model="Pass2"
+                        v-model="pass2"
                       ></v-text-field>
     
                   <v-spacer></v-spacer>
@@ -102,18 +102,15 @@ export default {
   },
 
   data: () => ({
-    Name: '',
-    Login: '',
-    Pass: '',
-    Pass2: ''
+    name: '',
+    login: '',
+    pass: '',
+    pass2: ''
   }),
 
   methods: {
     submit() {
-      const name = this.Name
-      const pass = this.Pass
-      const pass2 = this.Pass2
-      const login = this.Login
+      const { name, login, pass, pass2 } = this;
 
       api.post('/api/auth/register', {login, pass, pass2, name})
       .then(() => {
